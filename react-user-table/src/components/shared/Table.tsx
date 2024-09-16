@@ -1,14 +1,18 @@
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 export function Table() {
   const users = useSelector((state) => state.users);
 
   return (
     <div className="overflow-x-auto">
-      <button className="bg-blue-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 mr-2">
+      <Link
+        to="/addUser"
+        className="bg-blue-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 mr-2"
+      >
         Create +
-      </button>
-      <table className="min-w-full divide-y divide-gray-200 bg-white">
+      </Link>
+      <table className="min-w-full divide-y divide-gray-200 bg-white mt-20">
         <thead className="bg-gray-50">
           <tr>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
