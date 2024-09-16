@@ -19,9 +19,17 @@ const usersSlice = createSlice({
         update.phone = phone;
       }
     },
+
+    deleteUser: (state, action) => {
+      const { id } = action.payload;
+      const update = state.find((user) => user.id == id);
+
+      if (update) {
+        return state.filter((f) => f.id !== id);
+      }
+    },
   },
 });
 
-export const { addUser } = usersSlice.actions;
-export const { editUser } = usersSlice.actions;
+export const { addUser, editUser, deleteUser } = usersSlice.actions;
 export default usersSlice.reducer;
