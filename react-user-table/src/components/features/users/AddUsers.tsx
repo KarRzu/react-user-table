@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addUser } from "../redux/UserReducer";
 import { useNavigate } from "react-router-dom";
+import { RootState } from "../../../main";
 
 export function AddUsers() {
   const [name, setName] = useState("");
@@ -11,7 +12,7 @@ export function AddUsers() {
 
   const navigate = useNavigate();
 
-  const users = useSelector((state) => state.users);
+  const users = useSelector((state: RootState) => state.users);
 
   const dispatch = useDispatch();
 
@@ -30,14 +31,14 @@ export function AddUsers() {
   };
 
   return (
-    <div className="w-full h-screen flex justify-center items-center bg-slate-400 p-6">
-      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg">
+    <div className="w-full mt-8 flex justify-center items-center  p-6">
+      <div className="bg-white p-8 rounded-lg shadow-2xl w-full max-w-lg">
         <h2 className="text-2xl font-bold mb-6 text-gray-900">Add New User</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label
               htmlFor="name"
-              className="block text-sm font-medium text-gray-700 mb-1"
+              className="block text-sm font-medium text-gray-700 mb-1 text-left "
             >
               Name:
             </label>
@@ -53,7 +54,7 @@ export function AddUsers() {
           <div className="mb-4">
             <label
               htmlFor="username"
-              className="block text-sm font-medium text-gray-700 mb-1"
+              className="block text-sm font-medium text-gray-700 mb-1 text-left "
             >
               Username:
             </label>
@@ -69,7 +70,7 @@ export function AddUsers() {
           <div className="mb-4">
             <label
               htmlFor="email"
-              className="block text-sm font-medium text-gray-700 mb-1"
+              className="block text-sm font-medium text-gray-700 mb-1 text-left "
             >
               Email:
             </label>
@@ -85,7 +86,7 @@ export function AddUsers() {
           <div className="mb-6">
             <label
               htmlFor="phone"
-              className="block text-sm font-medium text-gray-700 mb-1"
+              className="block text-sm font-medium text-gray-700 mb-1 text-left "
             >
               Phone:
             </label>
