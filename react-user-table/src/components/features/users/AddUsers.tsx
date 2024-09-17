@@ -4,6 +4,14 @@ import { addUser } from "../redux/UserReducer";
 import { useNavigate } from "react-router-dom";
 import { RootState } from "../../../main";
 
+export type UserProps = {
+  id: number;
+  name: string;
+  username: string;
+  email: string;
+  phone: string;
+};
+
 export function AddUsers() {
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
@@ -11,22 +19,30 @@ export function AddUsers() {
   const [phone, setPhone] = useState("");
 
   const navigate = useNavigate();
-
-  const users = useSelector((state: RootState) => state.users);
-
   const dispatch = useDispatch();
+
+  const users = useSelector((state: RootState) => state.users.data);
+
+  const getNewId = () => {
+    if (users && users.length > 0) {
+      return Math.max(...users.map((user) => user.id)) + 1;
+    }
+    return 1;
+  };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    dispatch(
-      addUser({
-        id: users[users.length - 1].id + 1,
-        name,
-        username,
-        email,
-        phone,
-      })
-    );
+
+    const newUser: UserProps = {
+      id: getNewId(),
+      name,
+      username,
+      email,
+      phone,
+    };
+
+    dispatch(addUser(newUser));
+
     navigate("/");
   };
 
