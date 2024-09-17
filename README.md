@@ -3,7 +3,7 @@
 
 <h1>Features: </h1>
 <ul>
-  <li>Display users:Presents a list of users in a table</li>
+  <li>Display users: Presents a list of users in a table</li>
   <li>API data retrieval: Automatically retrieves user data from the specified API</li>
   <li>Deleting users: Ability to delete users from the table</li>
 </ul>
