@@ -19,3 +19,6 @@
   <li>JavaScript - A scripting language used to create dynamic content on websites</li>
 </ul>
 
+
+![image](https://github.com/user-attachments/assets/348babdb-b7b6-45f5-8f17-a5488ad8cdef)
+
