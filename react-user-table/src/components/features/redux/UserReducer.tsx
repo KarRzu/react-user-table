@@ -1,18 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-
-export type UserProps = {
-  id: number;
-  name: string;
-  username: string;
-  email: string;
-  phone: string;
-};
-
-export type UserState = {
-  data: UserProps[] | null;
-  isLoading: boolean;
-  isError: boolean;
-};
+import { UserProps, UserState } from "../users/types";
 
 const initialState: UserState = {
   data: [],

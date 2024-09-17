@@ -132,7 +132,7 @@ export function Table() {
 
       <div className="mb-4 mt-12 text-left">
         <Link
-          to="/addUser"
+          to="/add-user"
           className="bg-indigo-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
         >
           Create +
