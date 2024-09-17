@@ -11,3 +11,10 @@ export type UserState = {
   isLoading: boolean;
   isError: boolean;
 };
+
+export type FormValues = {
+  name: string;
+  username: string;
+  email: string;
+  phone: string;
+};

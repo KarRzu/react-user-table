@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { UserProps, UserState } from "../users/types";
 
 const initialState: UserState = {
@@ -20,23 +20,29 @@ export const fetchUsers = createAsyncThunk<UserProps[]>(
   }
 );
 
+export const addUserAsync = createAsyncThunk<UserProps, UserProps>(
+  "users/add-user",
+  async (user) => {
+    const response = await fetch(`https://jsonplaceholder.typicode.com/users`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(user),
+    });
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    return response.json();
+  }
+);
+
 const usersSlice = createSlice({
   name: "users",
   initialState,
   reducers: {
-    addUser: (state, action) => {
+    addUser: (state, action: PayloadAction<UserProps>) => {
       state.data?.push(action.payload);
-    },
-    editUser: (state, action) => {
-      const { id, name, username, email, phone } = action.payload;
-      const update = state.data?.find((user) => user.id === id);
-
-      if (update) {
-        update.name = name;
-        update.username = username;
-        update.email = email;
-        update.phone = phone;
-      }
     },
 
     deleteUser: (state, action) => {
@@ -58,9 +64,12 @@ const usersSlice = createSlice({
       .addCase(fetchUsers.rejected, (state, action) => {
         console.error("Failed to fetch users:", action.error.message);
         state.isError = true;
+      })
+      .addCase(addUserAsync.fulfilled, (state, action) => {
+        state.data?.push(action.payload);
       });
   },
 });
 
-export const { addUser, editUser, deleteUser } = usersSlice.actions;
+export const { addUser, deleteUser } = usersSlice.actions;
 export default usersSlice.reducer;

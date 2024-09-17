@@ -1,25 +1,19 @@
-import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addUser } from "../redux/UserReducer";
+import { addUserAsync } from "../redux/UserReducer";
 import { useNavigate } from "react-router-dom";
-import { RootState } from "../../../main";
-
-export type UserProps = {
-  id: number;
-  name: string;
-  username: string;
-  email: string;
-  phone: string;
-};
+import { AppDispatch, RootState } from "../../../main";
+import { FormValues, UserProps } from "./types";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 export function AddUsers() {
-  const [name, setName] = useState("");
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormValues>();
 
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   const users = useSelector((state: RootState) => state.users.data);
 
@@ -30,27 +24,27 @@ export function AddUsers() {
     return 1;
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
+  const onSubmit: SubmitHandler<FormValues> = (data) => {
     const newUser: UserProps = {
       id: getNewId(),
-      name,
-      username,
-      email,
-      phone,
+      ...data,
     };
 
-    dispatch(addUser(newUser));
-
-    navigate("/");
+    dispatch(addUserAsync(newUser))
+      .unwrap()
+      .then(() => {
+        navigate("/");
+      })
+      .catch((error) => {
+        console.error("Failed to add user:", error);
+      });
   };
 
   return (
     <div className="w-full mt-8 flex justify-center items-center  p-6">
       <div className="bg-white p-8 rounded-lg shadow-2xl w-full max-w-lg">
         <h2 className="text-2xl font-bold mb-6 text-gray-900">Add New User</h2>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-4">
             <label
               htmlFor="name"
@@ -59,13 +53,15 @@ export function AddUsers() {
               Name:
             </label>
             <input
+              {...register("name", { required: "Name is required" })}
               type="text"
-              name="name"
               id="name"
               className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               placeholder="Enter name"
-              onChange={(e) => setName(e.target.value)}
             />
+            {errors.name && (
+              <p className="text-red-500 text-sm">{errors.name.message}</p>
+            )}
           </div>
           <div className="mb-4">
             <label
@@ -75,13 +71,15 @@ export function AddUsers() {
               Username:
             </label>
             <input
+              {...register("username", { required: "Username is required" })}
               type="text"
-              name="username"
               id="username"
               className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               placeholder="Enter username"
-              onChange={(e) => setUsername(e.target.value)}
             />
+            {errors.username && (
+              <p className="text-red-500 text-sm">{errors.username.message}</p>
+            )}
           </div>
           <div className="mb-4">
             <label
@@ -91,13 +89,21 @@ export function AddUsers() {
               Email:
             </label>
             <input
+              {...register("email", {
+                required: "Email is required",
+                pattern: {
+                  value: /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/,
+                  message: "Invalid email address",
+                },
+              })}
               type="email"
-              name="email"
               id="email"
               className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               placeholder="Enter email"
-              onChange={(e) => setEmail(e.target.value)}
             />
+            {errors.email && (
+              <p className="text-red-500 text-sm">{errors.email.message}</p>
+            )}
           </div>
           <div className="mb-6">
             <label
@@ -107,13 +113,15 @@ export function AddUsers() {
               Phone:
             </label>
             <input
+              {...register("phone", { required: "Phone number is required" })}
               type="text"
-              name="phone"
               id="phone"
               className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               placeholder="Enter phone number"
-              onChange={(e) => setPhone(e.target.value)}
             />
+            {errors.phone && (
+              <p className="text-red-500 text-sm">{errors.phone.message}</p>
+            )}
           </div>
           <button
             type="submit"
